@@ -44,7 +44,7 @@ export default function SignUp() {
     console.log(data);
   }
   catch(error)
-    {setLoading(flase) 
+    {setLoading(false) 
       setError(error.message);
     }
    
