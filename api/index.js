@@ -6,6 +6,15 @@ import authRouter from "./routes/auth.route.js"
 import cors from 'cors';
 
 dotenv.config();
+
+
+const app=express();
+
+app.listen(3000,()=>
+{
+    console.log("service is running on port 3000!");
+}) 
+
 mongoose.connect(process.env.MONGO).then(()=> 
 {
     console.log("connected to database");
@@ -14,13 +23,6 @@ mongoose.connect(process.env.MONGO).then(()=>
     console.log("error in connecting to database");
 });
 
-
-const app=express();
-
-app.listen(3000,()=>
-{
-    console.log("service is running on port 3000!");
-})   
 app.use(cors());
 app.use(express.json());
 app.use("/api/user",userRouter);
