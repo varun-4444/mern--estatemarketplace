@@ -11,6 +11,7 @@ export default function SignIn() {
   // const [error,setError]=useState(null);
   // const [loading,setLoading]=useState(false);
   const { loading,error} = useSelector((state) => state.user);
+  
   const navigate=useNavigate();
   const dispatch=useDispatch();
   const handleChange = (e) =>
@@ -65,7 +66,7 @@ export default function SignIn() {
        </form>
        <div className="flex flex-row gap-2 my-4">
         <p>Dont have an account ? </p>
-        <Link to="/sign-up" className="text-blue-500">SignUp</Link>
+        <Link to="/sign-up" className="text-blue-500">SignIn</Link>
        </div>
        {error && <p className="text-red-500 mt-5">{error}</p>}
     </div>
