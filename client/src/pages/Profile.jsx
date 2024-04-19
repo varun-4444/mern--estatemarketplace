@@ -2,7 +2,7 @@ import { useState,useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useRef } from 'react';
 import {getDownloadURL, getStorage,ref, uploadBytesResumable} from 'firebase/storage'
-import { updateUserStart,updateUserSuccess,updateUserFailure } from '../redux/user/userSlice';
+import { updateUserStart,updateUserSuccess,updateUserFailure,deleteUserStart,deleteUserSuccess,deleteUserFailure } from '../redux/user/userSlice';
 import { useDispatch } from 'react-redux';
 
 import {app} from "../firebase" 
@@ -73,11 +73,33 @@ try {
   }
 
   dispatch(updateUserSuccess(data));
+
   setUpdateSuccess(true);
 } catch (error) {
   dispatch(updateUserFailure(error.message));
 }
 };
+  const handleDeleteUser = async(e)=>
+  {
+    try {
+      dispatch(deleteUserStart());
+      const res=await fetch(`/api/user/delete/${currentUser._id}`,
+    {
+      method:'DELETE',
+    });
+      const data= await res.json();
+      if(data.success === false)
+      {
+        dispatch(deleteUserFailure(data.message));
+        return ;
+      }
+      dispatch(deleteUserSuccess(data));
+
+      
+    } catch (error) {
+      dispatch(deleteUserFailure(error.message));
+    }
+  }
 
   return (
       <div className="p-3 max-w-lg mx-auto">
@@ -99,14 +121,14 @@ try {
           </button>
         <button className="bg-green-700 text-white p-3 rounded-lg uppercase hover:opacity-95 disabled:opacity-85" >CREATE LISTING</button>
         <div className="flex flex-row justify-between">
-          <p className="text-red-500">Delete Account</p>
+          <p  className="text-red-700 p-3   hover:opacity-95 disabled:opacity-85 cursor-pointer " onClick={handleDeleteUser}>Delete Account</p>
           <p className="text-red-500">Sign Out</p>
         </div>
         <p className="text-green-500">Show Listings</p>
        </form>
-       <div className="text-red-700 mt-5">
+       {/* <div className="text-red-700 mt-5">
         {error ? error : ""}
-       </div>
+       </div> */}
        <div className="text-green-700 mt-5">
         {updateSuccess ? "Successfully updated" : ""} 
        </div>
