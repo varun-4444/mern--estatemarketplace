@@ -2,7 +2,7 @@ import { useState,useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useRef } from 'react';
 import {getDownloadURL, getStorage,ref, uploadBytesResumable} from 'firebase/storage'
-import { updateUserStart,updateUserSuccess,updateUserFailure,deleteUserStart,deleteUserSuccess,deleteUserFailure } from '../redux/user/userSlice';
+import { updateUserStart,updateUserSuccess,updateUserFailure,deleteUserStart,deleteUserSuccess,deleteUserFailure,signoutUserFailure,signoutUserSuccess,signoutUserStart } from '../redux/user/userSlice';
 import { useDispatch } from 'react-redux';
 
 import {app} from "../firebase" 
@@ -100,6 +100,22 @@ try {
       dispatch(deleteUserFailure(error.message));
     }
   }
+  const handleSignOut = async (e) => {
+    try {
+      dispatch(signoutUserStart());
+      const res = await fetch('api/auth/signout',{
+        method:"POST",
+      });
+      const data = await res.json();
+      if (data.success === false) {
+        dispatch(signoutUserFailure(data.message));
+        return;
+      }
+      dispatch(signoutUserSuccess(data));
+    } catch (error) {
+      dispatch(signoutUserFailure(error.message));
+    }
+  };
 
   return (
       <div className="p-3 max-w-lg mx-auto">
@@ -122,7 +138,7 @@ try {
         <button className="bg-green-700 text-white p-3 rounded-lg uppercase hover:opacity-95 disabled:opacity-85" >CREATE LISTING</button>
         <div className="flex flex-row justify-between">
           <p  className="text-red-700 p-3   hover:opacity-95 disabled:opacity-85 cursor-pointer " onClick={handleDeleteUser}>Delete Account</p>
-          <p className="text-red-500">Sign Out</p>
+          <p className="text-red-500 cursor-pointer" onClick={handleSignOut}>Sign Out</p>
         </div>
         <p className="text-green-500">Show Listings</p>
        </form>
