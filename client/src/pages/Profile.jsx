@@ -4,6 +4,7 @@ import { useRef } from 'react';
 import {getDownloadURL, getStorage,ref, uploadBytesResumable} from 'firebase/storage'
 import { updateUserStart,updateUserSuccess,updateUserFailure,deleteUserStart,deleteUserSuccess,deleteUserFailure,signoutUserFailure,signoutUserSuccess,signoutUserStart } from '../redux/user/userSlice';
 import { useDispatch } from 'react-redux';
+import {Link} from 'react-router-dom'
 
 import {app} from "../firebase" 
 
@@ -135,7 +136,7 @@ try {
           
           {loading ? "Loading..." :"UPDATE" } 
           </button>
-        <button className="bg-green-700 text-white p-3 rounded-lg uppercase hover:opacity-95 disabled:opacity-85" >CREATE LISTING</button>
+        <Link to={"/create-listing"} className='bg-green-700 text-white p-3 rounded-lg uppercase text-center hover:opacity-95'>Create Listing</Link>
         <div className="flex flex-row justify-between">
           <p  className="text-red-700 p-3   hover:opacity-95 disabled:opacity-85 cursor-pointer " onClick={handleDeleteUser}>Delete Account</p>
           <p className="text-red-500 cursor-pointer" onClick={handleSignOut}>Sign Out</p>
